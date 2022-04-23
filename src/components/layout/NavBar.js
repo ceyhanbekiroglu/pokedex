@@ -10,7 +10,7 @@ export default class NavBar extends Component {
 						href="/"
 						className="navbar-brand col-sm-3 col-md-2mr-0 alignItems-center"
 					>
-						Pokedex
+						Pokedex V2
 					</a>
 				</nav>
 			</div>
