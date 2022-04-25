@@ -13,13 +13,24 @@ export default class PokemonCard extends Component {
 		imageUrl: "",
 		pokemonIndex: "",
 	}
-	render() {
+	componentDidMount() {
 		const { name, url } = this.props
+		const pokemonIndex = url.split("/")[url.split("/").length - 2]
+		const imageUrl = `https://raw.github.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonIndex}.png`
 
+		this.setState({
+			name,
+			imageUrl,
+			pokemonIndex,
+		})
+	}
+
+	render() {
 		return (
 			<div className="col-md-3 col-sm-6 mb-5">
 				<div className="card">
 					<h5 className="card-header">{this.state.pokemonIndex}</h5>
+
 					{this.state.imageLoading ? () : null}
 					<Sprite
 						className="card-image-top rounded mx-auto mt-2"
@@ -34,6 +45,7 @@ export default class PokemonCard extends Component {
 							<span className="badge badge-danger mt-2">Too many requests</span>
 						</h6>
 					) : null}
+		
 					<div className="card-body mx-auto">
 						<h6 className="card-title">
 							{this.state.name
