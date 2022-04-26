@@ -1,5 +1,9 @@
+/* eslint-disable jsx-a11y/alt-text */
 import React, { Component } from "react"
+
 import styled from "styled-components"
+
+import loading from "../pokemon/loading.gif"
 
 const Sprite = styled.img`
 	width: 5em,
@@ -7,11 +11,21 @@ const Sprite = styled.img`
 	display: none,
 	`
 
+const Card = styled.div`
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24); //check what is this for
+	transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); //check what is this cubic-bezier
+	&:hover {
+		box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+	}
+`
+
 export default class PokemonCard extends Component {
 	state = {
 		name: "",
 		imageUrl: "",
 		pokemonIndex: "",
+		imageLoading: true,
+		toManyRequests: false,
 	}
 	componentDidMount() {
 		const { name, url } = this.props
@@ -28,16 +42,28 @@ export default class PokemonCard extends Component {
 	render() {
 		return (
 			<div className="col-md-3 col-sm-6 mb-5">
-				<div className="card">
+				<Card className="card">
 					<h5 className="card-header">{this.state.pokemonIndex}</h5>
 
-					{this.state.imageLoading ? () : null}
+					{this.state.imageLoading ? (
+						<img
+							src={loading}
+							style={{ width: "2em", height: "2em" }}
+							className="card-img-top rounded mx-auto d-block mt-2"
+						/>
+					) : null}
 					<Sprite
 						className="card-image-top rounded mx-auto mt-2"
+						width={"120px"}
+						onLoad={() => this.setState({ imageLoading: false })}
+						onError={() => this.setState({ toManyRequests: true })}
 						src={this.state.imageUrl}
-						stle={
-							this.state.tooManyRequests ? { display: "none" } :
-							this.state.imageLoading ? { display: "block" } :
+						style={
+							this.state.toManyRequests
+								? { display: "none" }
+								: this.state.imageLoading
+								? null
+								: { display: "block" }
 						}
 					/>
 					{this.state.toManyRequests ? (
@@ -45,7 +71,7 @@ export default class PokemonCard extends Component {
 							<span className="badge badge-danger mt-2">Too many requests</span>
 						</h6>
 					) : null}
-		
+
 					<div className="card-body mx-auto">
 						<h6 className="card-title">
 							{this.state.name
@@ -58,7 +84,7 @@ export default class PokemonCard extends Component {
 								.join("")}
 						</h6>
 					</div>
-				</div>
+				</Card>
 			</div>
 		)
 	}
