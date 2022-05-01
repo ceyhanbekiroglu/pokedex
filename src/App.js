@@ -1,11 +1,13 @@
 import React, { Component } from "react"
-import { HashRouter as Router, Route, Routes } from "react-router-dom"
+import { HashRouter as Router, Route, Switch } from "react-router-dom"
 
 import "bootstrap/dist/css/bootstrap.min.css"
 
 import "./App.css"
+
 import NavBar from "./components/layout/NavBar"
 import Dashboard from "./components/layout/Dashboard"
+import SearchBar from "./components/search/SearchBar"
 import Pokemon from "./components/pokemon/Pokemon"
 
 class App extends Component {
@@ -15,14 +17,11 @@ class App extends Component {
 				<div className="App">
 					<NavBar />
 					<div className="container">
-						<Routes>
-							<Route exact path="/" element={<Dashboard />} />
-							<Route
-								exact
-								path="/pokemon/:pokemonIndex"
-								element={<Pokemon />}
-							/>
-						</Routes>
+						<Switch>
+							<Route exact path="/" component={Dashboard} />
+							<Route exact path="/pokemon/:pokemonIndex" component={Pokemon} />
+							<Route exact path="/search" component={SearchBar} />
+						</Switch>
 					</div>
 				</div>
 			</Router>
