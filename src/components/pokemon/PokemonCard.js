@@ -1,25 +1,26 @@
-/* eslint-disable jsx-a11y/alt-text */
 import React, { Component } from "react"
 import { Link } from "react-router-dom"
 
 import styled from "styled-components"
 
-import loading from "../pokemon/loading.gif"
+import spinner from "../layout/spinner.gif"
 
 const Sprite = styled.img`
-	width: 5em,
-	height: 5em,
-	display: none,
-	`
+	width: 5em;
+	height: 5em;
+	display: none;
+`
 
 const Card = styled.div`
-	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24); //check what is this for
-	transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); //check what is this cubic-bezier
+	opacity: 0.95;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+	transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 	&:hover {
 		box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 	}
 	-moz-user-select: none;
-	-webkit-user-select: none;
+	-website-user-select: none;
+	-ms-user-select: none;
 	user-select: none;
 	-o-user-select: none;
 `
@@ -27,6 +28,7 @@ const Card = styled.div`
 const StyledLink = styled(Link)`
 	text-decoration: none;
 	color: black;
+
 	&:focus,
 	&:hover,
 	&:visited,
@@ -44,16 +46,15 @@ export default class PokemonCard extends Component {
 		imageLoading: true,
 		toManyRequests: false,
 	}
+
 	componentDidMount() {
 		const { name, url } = this.props
+
 		const pokemonIndex = url.split("/")[url.split("/").length - 2]
+		//const imageUrl = `./sprites/pokemon/${pokemonIndex}.png`;
 		const imageUrl = `https://raw.github.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonIndex}.png`
 
-		this.setState({
-			name,
-			imageUrl,
-			pokemonIndex,
-		})
+		this.setState({ name, imageUrl, pokemonIndex })
 	}
 
 	render() {
@@ -62,20 +63,18 @@ export default class PokemonCard extends Component {
 				<StyledLink to={`pokemon/${this.state.pokemonIndex}`}>
 					<Card className="card">
 						<h5 className="card-header">{this.state.pokemonIndex}</h5>
-
 						{this.state.imageLoading ? (
 							<img
-								src={loading}
-								style={{ width: "2em", height: "2em" }}
+								src={spinner}
+								style={{ width: "5em", height: "5em" }}
 								className="card-img-top rounded mx-auto d-block mt-2"
 							/>
 						) : null}
 						<Sprite
-							className="card-image-top rounded mx-auto mt-2"
-							width={"120px"}
+							className="card-img-top rounded mx-auto mt-2"
+							src={this.state.imageUrl}
 							onLoad={() => this.setState({ imageLoading: false })}
 							onError={() => this.setState({ toManyRequests: true })}
-							src={this.state.imageUrl}
 							style={
 								this.state.toManyRequests
 									? { display: "none" }
@@ -87,21 +86,17 @@ export default class PokemonCard extends Component {
 						{this.state.toManyRequests ? (
 							<h6 className="mx-auto">
 								<span className="badge badge-danger mt-2">
-									Too many requests
+									Too Many Requests
 								</span>
 							</h6>
 						) : null}
-
 						<div className="card-body mx-auto">
 							<h6 className="card-title">
 								{this.state.name
-									.toLocaleLowerCase()
+									.toLowerCase()
 									.split(" ")
-									.map(
-										(letter) =>
-											letter.charAt(0).toUpperCase() + letter.substring(1)
-									)
-									.join("")}
+									.map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+									.join(" ")}
 							</h6>
 						</div>
 					</Card>

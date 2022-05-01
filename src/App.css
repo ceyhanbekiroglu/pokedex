@@ -1,9 +1,13 @@
 .App {
-	background-color: #ef5350;
+	background-color: #ef5350 !important;
 	padding-top: 4rem;
 	min-height: 100vh;
 }
 
 .navbar {
 	background-color: #ef5350 !important;
+}
+
+body {
+	background-color: transparent !important;
 }
